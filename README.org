@@ -1,5 +1,5 @@
-## Time-stamp: <2016-08-21 11:55:47 vk>
-## -*- coding: utf-8 -*-
+## Time-stamp: <2016-08-21 12:03:05 vk>
+## -*- mode: org; coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
 * vkl - a better "ls"-experience
@@ -29,7 +29,6 @@ the current directory.
 vkl --help
 #+END_SRC
 
-#+RESULTS:
 #+BEGIN_src
 Usage:
          vkl <options>
