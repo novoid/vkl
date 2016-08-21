@@ -1,0 +1,81 @@
+## Time-stamp: <2016-08-21 11:50:40 vk>
+## -*- coding: utf-8 -*-
+## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
+
+* vkl - a better "ls"-experience
+
+This Python script is a wrapper for the GNU/Linux ~ls~-tool for simple
+cases. To be precise, it's a substitute (only) for the following command:
+
+: ls -lt --all --reverse --directory --classify --color=auto
+
+In contrast to the standard ~ls~ output, this script visualizes time
+in a much better way:
+
+[[file:images/vkl-Screenshot.png]]
+
+Normal ~ls~ command is listing all files without proper way to
+visualize brand-new, new, old, and very old files. By introducing
+horizontal bars that sub-divide the output in a pseudo-logarithmical
+way, the user gets a *much better feeling on the age* of the items in
+the current directory.
+
+- *Target group*: users of a GNU/UNIX command line or similar
+- Hosted on github: https://github.com/novoid/guess-filename.py
+
+** Usage
+
+#+BEGIN_SRC sh :results output :wrap example
+vkl --help
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example
+Usage:
+         vkl <options>
+
+This tool lists the current directory content in various metric
+GNU ls does not provide.
+
+:copyright: (c) 2010 by Karl Voit <tools@Karl-Voit.at>
+:license: GPL v3 or any later version
+:bugreports: <tools@Karl-Voit.at>
+
+Options:
+  -h, --help         show this help message and exit
+  -l, --log          displays directory content by a pseudo logarithmic time
+                     (default option)
+  -m, --mtime        sort items using modification time (default option)
+  -c, --ctime        sort items using change time
+  -a, --atime        sort items using access time
+  -p, --primitivels  use primitive output of directory rather than using GNU
+                     ls
+  --debug            enable (senseless) debug output
+#+END_example
+
+Examples:
+
+: vkl
+... the simplest case, sorted by modification time
+
+: vkl -c
+... sorted by change time
+
+: vkl -p
+... using its own (primitive, self-written) output to circumvent output issues or to use it on non-GNU/UNIX system
+
+
+* Contribute!
+
+I am looking for your ideas!
+
+If you want to contribute to this cool project, please fork and
+contribute!
+
+
+* Local Variables                                                  :noexport:
+# Local Variables:
+# mode: auto-fill
+# mode: flyspell
+# eval: (ispell-change-dictionary "en_US")
+# End:
