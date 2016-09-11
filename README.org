@@ -1,4 +1,4 @@
-## Time-stamp: <2016-08-29 18:12:07 karl.voit>
+## Time-stamp: <2016-09-11 17:58:27 vk>
 ## -*- mode: org; coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
@@ -26,6 +26,10 @@ the current directory.
 By the way: yes, I tried to get this functionality to the GNU project
 to be included to ~ls~. I failed miserably. To me, they don't seem to
 add such features for many years. Very conservative :-(
+
+** Installation
+
+Get it from [[https://github.com/novoid/vkl][GitHub]] or install it via «pip install vkl».
 
 ** Usage
 
