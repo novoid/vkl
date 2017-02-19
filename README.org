@@ -55,6 +55,7 @@ Options:
   -m, --mtime        sort items using modification time (default option)
   -c, --ctime        sort items using change time
   -a, --atime        sort items using access time
+  -d, --delegate     delegate additional arguments to ls command
   -p, --primitivels  use primitive output of directory rather than using GNU
                      ls
   --debug            enable (senseless) debug output
