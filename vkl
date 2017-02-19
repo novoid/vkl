@@ -83,6 +83,9 @@ parser.add_option("-a", "--atime", dest="atime", action="store_true",
 parser.add_option("-p", "--primitivels", dest="primitivels", action="store_true",
                   help="use primitive output of directory rather than using GNU ls")
 
+parser.add_option("-d", "--delegate", dest="delegate", action="store", default='',
+                  help="delegate additional arguments to ls command")
+
 parser.add_option("--debug", dest="debug", action="store_true",
                   help="enable (senseless) debug output")
 
@@ -168,7 +171,7 @@ def print_out_items(items, mcatime, use_gnu_ls):
                 elif mcatime=='atime':
                         timeoption="-u"
 
-        os.system('ls ' + timeoption + " " + GNU_LS_OPTIONS + ' ' + unfolded_itemstring )   ## ... using system function
+        os.system('ls %s %s %s %s' % (options.delegate, timeoption, GNU_LS_OPTIONS, unfolded_itemstring))   ## ... using system function
 
     else:
 
