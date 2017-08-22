@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Latest change: Wed Nov 03 20:20:01 CET 2010
+PROG_VERSION = u"Time-stamp: <2017-08-22 13:21:13 vk>"
 
 """
 vkpyls
@@ -31,6 +31,7 @@ from optparse import OptionParser
 ## "False": use python simple printout
 CONFIG_USE_GNU_LS=True
 
+PROG_VERSION_DATE = PROG_VERSION[13:23]
 
 ## modify this to your taste although the default setting is quite cool already :-)
 if sys.platform=="darwin":
@@ -62,7 +63,8 @@ USAGE = "\n\
 \n\
 This tool lists the current directory content in various metric\n\
 GNU ls does not provide.\n\n\
-:copyright: (c) 2010 by Karl Voit <tools@Karl-Voit.at>\n\
+:copyright: (c) 2010-now by Karl Voit <tools@Karl-Voit.at>\n\
+:version: " + PROG_VERSION_DATE + "\n\
 :license: GPL v3 or any later version\n\
 :bugreports: <tools@Karl-Voit.at>"
 
