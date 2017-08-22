@@ -1,6 +1,7 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Latest change: Wed Nov 03 20:20:01 CET 2010
+
 """
 vkpyls
 ~~~~~~
@@ -174,7 +175,7 @@ def print_out_items(items, mcatime, use_gnu_ls):
 
         for item in items:
             # logging.info(" ".ljust(justificationlength) + str(item['name']) )   ## ... using python output
-            print str( item['name'] )   ## ... using simple python output
+            print((str( item['name'] )))   ## ... using simple python output
 
 
 def print_colored_string(string):
@@ -184,7 +185,7 @@ def print_colored_string(string):
     ## for i in range(1,100):
     ##         print str(i) + '\033['+str(i)+'m' + "Test" + '\033[0m'
 
-    print COLOUR_CODE + string + '\033[0m'
+    print(COLOUR_CODE + string + '\033[0m')
 
 
 def list_dir_pseudologtime(items, timemetrics, use_gnu_ls):
