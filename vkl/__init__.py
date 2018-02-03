@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-PROG_VERSION = u"Time-stamp: <2017-08-22 13:21:13 vk>"
+PROG_VERSION = u"Time-stamp: <2018-02-03 20:47:04 vk>"
 
 """
 vkpyls
@@ -190,7 +190,10 @@ def print_colored_string(string):
     ## for i in range(1,100):
     ##         print str(i) + '\033['+str(i)+'m' + "Test" + '\033[0m'
 
-    print(COLOUR_CODE + string + '\033[0m')
+    if sys.platform == 'win32':
+        print('—' * 20 + '→' + string)  # no colors for Windows, so sad. :-(
+    else:
+        print(COLOUR_CODE + string + '\033[0m')
 
 
 def list_dir_pseudologtime(items, timemetrics, use_gnu_ls):
@@ -275,6 +278,8 @@ def main():
     ## handle "use GNU ls" according to default setting or override via command line:
     if options.primitivels:
         USE_GNU_LS=False   ## override via command line switch
+    elif sys.platform == 'win32':
+        USE_GNU_LS=False   ## override for primitive Windows shell
     else:
         USE_GNU_LS=CONFIG_USE_GNU_LS  ## use default setting from very above
     logging.debug( "USE_GNU_LS=" + str(USE_GNU_LS) )
