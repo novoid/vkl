@@ -17,7 +17,7 @@ way, the user gets a *much better feeling on the age* of the items in
 the current directory.
 
 - *Target group*: users of a GNU/UNIX command line or similar
-- Hosted on github: https://github.com/novoid/guess-filename.py
+- Hosted on github: https://github.com/novoid/vkl
 
 By the way: yes, I tried to get this functionality to the GNU project
 to be included to ~ls~. I failed miserably. To me, they don't seem to
