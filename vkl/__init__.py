@@ -21,6 +21,7 @@ FIXXME:
     * find additional metrics
     * additional parameter: print out groups of items sorted by alphabet
     * move from optparse to argparse
+    * certain characters in file names break output such as " -> test and fix
 
 """
 import logging, os, sys, time, datetime
