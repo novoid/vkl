@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-PROG_VERSION = u"Time-stamp: <2018-02-03 20:47:04 vk>"
+PROG_VERSION = "Time-stamp: <2018-02-03 20:47:04 vk>"
 
 """
 vkpyls
@@ -119,7 +119,7 @@ def get_directory_items_with_times():
     items = []
     for item in os.listdir("."):
         if not os.path.exists(item):
-            logging.warn("WARNING: \"" + item + "\" seems to be a broken link")
+            logging.warning("WARNING: \"" + item + "\" seems to be a broken link")
         else:
             items.append( {"name":item, "mtime":os.path.getmtime(item), "ctime":os.path.getctime(item),
                 "atime":os.path.getatime(item) } )
