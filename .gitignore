@@ -1,0 +1,16 @@
+colortest.py
+testdata/*
+MANIFEST
+
+# build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+
+# uv / virtualenvs
+.venv/
+
+# tooling caches
+.mypy_cache/
