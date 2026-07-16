@@ -1,6 +1,6 @@
 [project]
 name = "vkl"
-version = "2018.02.03.03"
+version = "2026.07.16"
 description = "vkl - a better ls-experience"
 readme = { file = "README.org", content-type = "text/plain" }
 requires-python = ">=3.8"
