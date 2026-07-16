@@ -38,27 +38,34 @@ vkl --help
 #+END_SRC
 
 #+BEGIN_src
-Usage:
-         vkl <options>
+usage: vkl [-h] [-l] [-m | -c | -a] [-p] [-d DELEGATE] [--debug] [--version]
 
-This tool lists the current directory content in various metric
-GNU ls does not provide.
+vkl lists the current directory's contents sorted by time and grouped into pseudo-logarithmic age classes (recently, 1 hour, 1 day, 1 week, 1 month, ...) — a visualization GNU ls does not provide.
 
-:copyright: (c) 2010 by Karl Voit <tools@Karl-Voit.at>
+Homepage: https://github.com/novoid/vkl
+
+options:
+  -h, --help            show this help message and exit
+  -l, --log             displays directory content by a pseudo logarithmic
+                        time (default option)
+  -m, --mtime           sort items using modification time (default option)
+  -c, --ctime           sort items using change time
+  -a, --atime           sort items using access time
+  -p, --primitivels     use primitive output of directory rather than using
+                        GNU ls
+  -d, --delegate DELEGATE
+                        delegate additional arguments to ls command; for
+                        values starting with a dash use "=", e.g.
+                        --delegate="-la"
+  --debug               enable (senseless) debug output
+  --version             display version and exit
+
+:copyright: (c) 2010-now by Karl Voit <tools@Karl-Voit.at>
 :license: GPL v3 or any later version
-:bugreports: <tools@Karl-Voit.at>
-
-Options:
-  -h, --help         show this help message and exit
-  -l, --log          displays directory content by a pseudo logarithmic time
-                     (default option)
-  -m, --mtime        sort items using modification time (default option)
-  -c, --ctime        sort items using change time
-  -a, --atime        sort items using access time
-  -d, --delegate     delegate additional arguments to ls command
-  -p, --primitivels  use primitive output of directory rather than using GNU
-                     ls
-  --debug            enable (senseless) debug output
+:URL: https://github.com/novoid/vkl
+:bugreports: via github or <tools@Karl-Voit.at>
+:version: 2026-07-16
+·
 #+END_src
 
 

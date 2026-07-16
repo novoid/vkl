@@ -21,11 +21,10 @@ FIXXME:
     * add possibility to specify directory (other than current directory)
     * find additional metrics
     * additional parameter: print out groups of items sorted by alphabet
-    * move from optparse to argparse
 
 """
-import logging, os, sys, time, datetime, subprocess
-from optparse import OptionParser
+import logging, os, sys, time, datetime, subprocess, argparse
+from typing import NoReturn
 
 
 ## "True": use "ls" to print out verbose list of items
@@ -59,48 +58,62 @@ COLOUR_CODE='\033[7m' ## invert
 ## initialize config setting as global variable
 USE_GNU_LS=""
 
-USAGE = "\n\
-         %prog <options>\n\
-\n\
-This tool lists the current directory content in various metric\n\
-GNU ls does not provide.\n\n\
-:copyright: (c) 2010-now by Karl Voit <tools@Karl-Voit.at>\n\
-:version: " + PROG_VERSION_DATE + "\n\
-:license: GPL v3 or any later version\n\
-:bugreports: <tools@Karl-Voit.at>"
+DESCRIPTION = (
+    "vkl lists the current directory's contents sorted by time and grouped into "
+    "pseudo-logarithmic age classes (recently, 1 hour, 1 day, 1 week, 1 month, "
+    "...) — a visualization GNU ls does not provide.\n"
+    "\n"
+    "Homepage: https://github.com/novoid/vkl"
+)
+
+EPILOG = (
+    "\n"
+    ":copyright: (c) 2010-now by Karl Voit <tools@Karl-Voit.at>\n"
+    ":license: GPL v3 or any later version\n"
+    ":URL: https://github.com/novoid/vkl\n"
+    ":bugreports: via github or <tools@Karl-Voit.at>\n"
+    f":version: {PROG_VERSION_DATE}\n·\n"
+)
+
+parser = argparse.ArgumentParser(prog="vkl",
+                                 # keep line breaks in EPILOG and such
+                                 formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 epilog=EPILOG,
+                                 description=DESCRIPTION)
+
+parser.add_argument("-l", "--log", dest="pseudologtime", action="store_true", default=True,
+                    help="displays directory content by a pseudo logarithmic time (default option)")
+
+## only one time metric may be chosen at a time; argparse enforces this:
+timegroup = parser.add_mutually_exclusive_group()
+
+timegroup.add_argument("-m", "--mtime", dest="mtime", action="store_true",
+                       help="sort items using modification time (default option)")
+
+timegroup.add_argument("-c", "--ctime", dest="ctime", action="store_true",
+                       help="sort items using change time")
+
+timegroup.add_argument("-a", "--atime", dest="atime", action="store_true",
+                       help="sort items using access time")
+
+parser.add_argument("-p", "--primitivels", dest="primitivels", action="store_true",
+                    help="use primitive output of directory rather than using GNU ls")
+
+parser.add_argument("-d", "--delegate", dest="delegate", action="store", default="",
+                    help="delegate additional arguments to ls command; "
+                         "for values starting with a dash use \"=\", e.g. --delegate=\"-la\"")
+
+parser.add_argument("--debug", dest="debug", action="store_true",
+                    help="enable (senseless) debug output")
+
+parser.add_argument("--version", dest="version", action="store_true",
+                    help="display version and exit")
+
+options = parser.parse_args()
 
 
-parser = OptionParser(usage=USAGE)
 
-parser.add_option("-l", "--log", dest="pseudologtime", action="store_true", default=True,
-                  help="displays directory content by a pseudo logarithmic time (default option)")
-
-parser.add_option("-m", "--mtime", dest="mtime", action="store_true",
-                  help="sort items using modification time (default option)")
-
-parser.add_option("-c", "--ctime", dest="ctime", action="store_true",
-                  help="sort items using change time")
-
-parser.add_option("-a", "--atime", dest="atime", action="store_true",
-                  help="sort items using access time")
-
-parser.add_option("-p", "--primitivels", dest="primitivels", action="store_true",
-                  help="use primitive output of directory rather than using GNU ls")
-
-parser.add_option("-d", "--delegate", dest="delegate", action="store", default='',
-                  help="delegate additional arguments to ls command")
-
-parser.add_option("--debug", dest="debug", action="store_true",
-                  help="enable (senseless) debug output")
-
-## parser.add_option("-q", "--quiet", dest="quiet", action="store_true",
-##                   help="do not output anything but just errors on console")
-
-(options, args) = parser.parse_args()
-
-
-
-def handle_logging():
+def handle_logging() -> None:
     """Log handling and configuration"""
 
     if options.debug:
@@ -112,6 +125,22 @@ def handle_logging():
     else:
         FORMAT = "%(message)s"
         logging.basicConfig(level=logging.INFO, format=FORMAT)
+
+
+def error_exit(errorcode: int, text: str) -> NoReturn:
+    """exits with return value of errorcode and logs the error text"""
+
+    sys.stdout.flush()
+    logging.error(text)
+    sys.exit(errorcode)
+
+
+def successful_exit() -> NoReturn:
+    """logs success and exits with return code 0"""
+
+    logging.debug("successfully finished.")
+    sys.stdout.flush()
+    sys.exit(0)
 
 
 def get_directory_items_with_times():
@@ -262,22 +291,19 @@ def list_dir_pseudologtime(items, timemetrics, use_gnu_ls):
     if items_to_print:
         print_out_items( items_to_print, timemetrics, use_gnu_ls )
 
-def main():
+def main() -> None:
     """Main function [make pylint happy :)]"""
+
+    if options.version:
+        print(f"{os.path.basename(sys.argv[0])} version {PROG_VERSION_DATE}")
+        sys.exit(0)
 
     handle_logging()
 
-    ## error handling:
+    ## error handling (choosing more than one of m/c/a-time is rejected by argparse):
 
-    if (options.mtime and options.ctime) or \
-       (options.ctime and options.atime) or \
-       (options.atime and options.mtime):
-        logging.error("please choose only one of mtime, ctime, or atime!")
-        os.sys.exit(2)
-
-    if not (options.pseudologtime):
-        logging.error("please choose one option of log!")
-        os.sys.exit(1)
+    if not options.pseudologtime:
+        error_exit(1, "please choose one option of log!")
 
     ## do things:
 
@@ -315,7 +341,7 @@ def main():
     if options.pseudologtime:
         logging.debug("pseudo log time parameter recognised")
         list_dir_pseudologtime(items, TIMEMETRICS, USE_GNU_LS)
-        os.sys.exit(0)
+        successful_exit()
 
 
 
