@@ -23,6 +23,11 @@ dependencies = []
 Homepage = "https://github.com/novoid/vkl"
 Repository = "https://github.com/novoid/vkl"
 
+[dependency-groups]
+dev = [
+    "mypy>=1.0",
+]
+
 [project.scripts]
 vkl = "vkl:main"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-PROG_VERSION = "Time-stamp: <2018-02-03 20:47:04 vk>"
+from __future__ import annotations
+PROG_VERSION = "Time-stamp: <2026-07-16 17:04:36 vk>"
 
 """
 vkpyls
@@ -21,10 +22,9 @@ FIXXME:
     * find additional metrics
     * additional parameter: print out groups of items sorted by alphabet
     * move from optparse to argparse
-    * certain characters in file names break output such as " -> test and fix
 
 """
-import logging, os, sys, time, datetime
+import logging, os, sys, time, datetime, subprocess
 from optparse import OptionParser
 
 
@@ -149,39 +149,44 @@ def sort_items_by_time(items, mcatime):
     return newlist
 
 
-def print_out_items(items, mcatime, use_gnu_ls):
+def print_out_items(items: list[dict[str, object]], mcatime: str, use_gnu_ls: bool) -> None:
     """print out items in given list"""
-
-    justificationlength = 2
 
     if use_gnu_ls:
 
-        ## make a string with all item names to give it to 'ls' as a package (for nice formatting):
-        unfolded_itemstring = ""
-        for item in items:
-            unfolded_itemstring += " \"" + item['name'] + "\""
-
         ## ls accepts --time=(atime|ctime) with mtime as default if no option is given
-        timeoption=""
-        if not mcatime=="mtime":
-            timeoption="--time=" + mcatime
+        timeoption = ""
+        if mcatime != "mtime":
+            timeoption = f"--time={mcatime}"
 
         ## on OS X, SysV ls uses other options for amc-time:
-        if sys.platform=="darwin":
-                if mcatime=="mtime":
-                        timeoption="" ## mtime is default
-                elif mcatime=='ctime':
-                        timeoption="-c"
-                elif mcatime=='atime':
-                        timeoption="-u"
+        if sys.platform == "darwin":
+            if mcatime == "mtime":
+                timeoption = ""  ## mtime is default
+            elif mcatime == "ctime":
+                timeoption = "-c"
+            elif mcatime == "atime":
+                timeoption = "-u"
 
-        os.system('ls %s %s %s %s' % (options.delegate, timeoption, GNU_LS_OPTIONS, unfolded_itemstring))   ## ... using system function
+        ## Build an argv list (never a shell string): passing file names as
+        ## separate arguments to subprocess avoids the shell entirely, so names
+        ## containing quotes, semicolons, spaces, parentheses, etc. can no longer
+        ## break the command. options.delegate and GNU_LS_OPTIONS are our own
+        ## whitespace-separated option strings, so .split() is safe for them.
+        command = ["ls"]
+        command += options.delegate.split()
+        if timeoption:
+            command.append(timeoption)
+        command += GNU_LS_OPTIONS.split()
+        command += [str(item['name']) for item in items]
+
+        logging.debug(f"handing {len(items)} item(s) to 'ls' as argv (no shell): {command[:-len(items) or None]}")
+        subprocess.run(command)
 
     else:
 
         for item in items:
-            # logging.info(" ".ljust(justificationlength) + str(item['name']) )   ## ... using python output
-            print((str( item['name'] )))   ## ... using simple python output
+            print(str(item['name']))   ## ... using simple python output
 
 
 def print_colored_string(string):
